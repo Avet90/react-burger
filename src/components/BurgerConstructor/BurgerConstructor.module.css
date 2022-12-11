@@ -1,0 +1,46 @@
+.constructor_section {
+    width: 600px;
+}
+
+.constructor_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    height: calc(100vh - 400px);
+    overflow: auto; 
+}
+
+
+.constructor_list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.constructor_list_item {
+    display: flex;
+    align-items: center;
+}
+
+
+.constructor_wrapper::-webkit-scrollbar {
+    background-color: #2F2F37;
+    width: 8px;
+}
+
+.constructor_wrapper::-webkit-scrollbar-thumb {
+    background-color: #8585AD;
+}
+
+
+
+.constructor_button_wrapper {
+   display: flex;
+   justify-content: right;
+}
+
+
+.constructor_price_box {
+    display: flex;
+    align-items: center;
+ }

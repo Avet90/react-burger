@@ -1,0 +1,46 @@
+.ingredient_section {
+    max-width: 600px;
+    margin: 0;
+    justify-content: center;
+}
+
+.menu_list {
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    justify-content: space-between;
+    padding: 0;
+}
+
+.menu_item {
+    width: 272px;
+    height: 208px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.item_price_box {
+    display: flex;
+    justify-content: center;
+}
+
+.ingredients_box {
+    height: calc(100vh - 324px);
+    overflow: auto;
+}
+
+.ingredients_box::-webkit-scrollbar {
+    background-color: #2F2F37;
+    width: 8px;
+}
+
+.ingredients_box::-webkit-scrollbar-thumb {
+    background-color: #8585AD;
+}
+
+h3 {
+    text-align: center;
+}
