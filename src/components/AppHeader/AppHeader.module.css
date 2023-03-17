@@ -1,41 +1,31 @@
-.header {
-  max-width: 1920px;
-  box-sizing: border-box;
+.navPanel {
+  composes: p-4 from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
+  display: flex;
+  justify-content: center;
   background-color: #1C1C21;
-  margin: auto;
+  width: 100%;
 }
 
-.header_сontent {
-  display: flex;
-  justify-content: space-between;
+.navList {
+  composes: pt-4 from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
+  composes: pb-4 from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  max-width: 1280px;
-  max-height: 56px;
-  margin: auto;
+  justify-items: center;
+  width: 1280px;
+  box-sizing: border-box;
 }
 
-.nav_box {
+.navigation {
   display: flex;
+  gap: 8px;
 }
 
-.nav_list {
-  list-style-type: none;
-  display: flex;
-  margin: 0;
-  padding: 0;
+.first {
+  justify-self: start;
 }
 
-.link_wrapper {
-  display: flex;
-  cursor: pointer;
-}
-
-
-p {
-  margin: 0;
-}
-
-a {
-  text-decoration: none;
-  color: white;
+.last {
+  justify-self: end;
 }

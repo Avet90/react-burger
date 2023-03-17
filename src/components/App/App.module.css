@@ -16,3 +16,7 @@
   justify-content: space-between;
   margin: auto;
 }
+
+.message {
+  text-align: center;
+}
