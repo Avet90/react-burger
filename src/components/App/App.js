@@ -3,6 +3,7 @@ import AppHeader from '../AppHeader/AppHeader';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor.js';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients.js';
 import {getIngredients} from '../../utils/burger_api';
+import styles from './App.module.css'
 
 function App() {
     const [error, setError] = React.useState(false);
@@ -21,14 +22,15 @@ function App() {
         <>
             {error && <div>Упс! Похоже, закончились ингридиенты... Попробуйте зайти позже.</div>}
             <AppHeader/>
-            <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
+            <main className={styles.wrapper}>
                 <BurgerIngredients data={ingredients}/>
                 <div className='pt-25'>
                     <BurgerConstructor data={ingredients}/>
                 </div>
-            </div>
+            </main>
         </ >
     );
 }
+
 
 export default App;

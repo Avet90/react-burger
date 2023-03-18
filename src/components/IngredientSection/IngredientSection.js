@@ -1,10 +1,11 @@
 import Card from '../Card/Card.js';
 import {ingredientArray} from "../../utils/prop-types";
 import PropTypes from "prop-types";
+import style from "./IngredientSection.module.css";
 
-const BigCard = ({data, type, onClick, setSelected}) => {
+const IngredientSection = ({data, type, onClick, setSelected}) => {
     return (
-        <div className='pt-6 pr-1 pb-10 pl-4' style={{display: 'flex', flexWrap: 'wrap'}}>
+        <div className={style.wrapper}>
             {data.map((elem) => {
                 if (elem.type === type) {
                     return (
@@ -16,11 +17,11 @@ const BigCard = ({data, type, onClick, setSelected}) => {
     )
 }
 
-BigCard.propTypes = {
+IngredientSection.propTypes = {
     data: ingredientArray.isRequired,
     type: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
     setSelected: PropTypes.func.isRequired
 };
 
-export default BigCard;
+export default IngredientSection;

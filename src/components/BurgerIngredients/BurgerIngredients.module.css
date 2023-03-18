@@ -4,3 +4,10 @@
     height: 912px;
     overflow-y: auto;
 }
+.section {
+    width: 600px;
+}
+
+.wrapper_tabs {
+    display: flex;
+}

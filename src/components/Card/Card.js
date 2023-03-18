@@ -15,19 +15,19 @@ const Card = ({item, onClick, setSelected}) => {
 
     return (
         <>
-            <div className='ml-4 mb-8' style={{width: '265px'}} onClick={onCardClick}>
-                <div style={{position: 'relative'}}>
+            <div className={styles.wrapper} onClick={onCardClick}>
+                <div className={styles.wrapper_count}>
                     <Counter count={count} size="default"/>
                 </div>
-                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                <div className={styles.wrapper_card}>
                     <img className='mb-1' src={item.image} alt={item.name}/>
-                    <div className='mb-1' style={{display: 'flex'}}>
+                    <div className={styles.wrapper_text}>
                         <p className="text text_type_digits-default">{item.price}</p><CurrencyIcon type="primary"/>
                     </div>
                 </div>
-
+        
                 <div className={styles.textCont}>
-                    <p className="text text_type_main-default" style={{textAlign: "center"}}>
+                    <p className="text text_type_main-default" >
                         {item.name}
                     </p>
                 </div>

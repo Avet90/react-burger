@@ -8,13 +8,13 @@ import styles from './Modal.module.css';
 const modalRoot = document.getElementById("root");
 
 function Modal({onClose, title, children}) {
-    const onKeyDown = (event) => {
-        if (event.key === "Escape") {
-            onClose();
-        }
-    };
 
     useEffect(() => {
+        const onKeyDown = (event) => {
+            if (event.key === "Escape") {
+                onClose();
+            }
+        };
         document.addEventListener("keydown", onKeyDown);
         return () => {
             document.removeEventListener("keydown", onKeyDown);

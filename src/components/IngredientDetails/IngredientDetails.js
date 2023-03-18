@@ -4,7 +4,7 @@ import {ingredientType} from "../../utils/prop-types";
 const IngredientDetails = ({item}) => {
     return (
         <div className={style.content}>
-            <div className='mb-4'><img className={style.photo} src={item.image} alt="Ingredient"></img></div>
+            <div className='mb-4'><img className={style.photo} src={item.image} alt={item.name}></img></div>
             <div className='mb-8'><p className="text text_type_main-medium">{item.name}</p></div>
             <div className={style.ingredients}>
                 <div className={style.ingredients_section}>

@@ -8,6 +8,7 @@
     display: flex;
     justify-content: space-between;
     width: 508px;
+    padding-bottom: 60px;
 }
 
 .photo {
