@@ -1,5 +1,4 @@
-import uuid from 'react-uuid';
-import {ADD_INGREDIENT, DELETE_ALL, DELETE_INGREDIENT} from "../actions/order-actions";
+import {ADD_INGREDIENT, DELETE_ALL, DELETE_INGREDIENT, REPLACE_FILLING} from "../actions/order-actions";
 
 const initialState = {
     bun: null,
@@ -18,19 +17,17 @@ function calculatePrice(bun, filling, ingredient) {
 export const orderReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_INGREDIENT: {
-            const id = uuid();
-            const ingredient = {...action.ingredient, id};
-            if (ingredient.type === 'bun') {
+            if (action.ingredient.type === 'bun') {
                 return {
                     ...state,
-                    bun: ingredient,
-                    price: calculatePrice(ingredient, state.filling)
+                    bun: action.ingredient,
+                    price: calculatePrice(action.ingredient, state.filling)
                 };
             }
             return {
                 ...state,
-                filling: [...state.filling, ingredient],
-                price: calculatePrice(state.bun, state.filling, ingredient)
+                filling: [...state.filling, action.ingredient],
+                price: calculatePrice(state.bun, state.filling, action.ingredient)
             };
         }
         case DELETE_INGREDIENT: {
@@ -44,6 +41,16 @@ export const orderReducer = (state = initialState, action) => {
         case DELETE_ALL: {
             return {...initialState};
         }
+
+        case REPLACE_FILLING: {
+            return {
+                ...state,
+                filling: [
+                    ...action.filling
+                ]
+            }
+        }
+
         default: {
             return state;
         }

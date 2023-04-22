@@ -1,25 +1,13 @@
-import {Button, ConstructorElement, CurrencyIcon, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import {Button, ConstructorElement, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './BurgerConstructor.module.css';
 import Modal from '../Modal/Modal'
-import React from 'react';
+import React, {useCallback} from 'react';
 import OrderDetails from '../OrderDetails/OrderDetails.js'
 import {useSelector, useDispatch} from "react-redux";
 import {createOrder} from "../../utils/burger_api";
-import {addIngredient, deleteAll, deleteIngredient} from "../../services/actions/order-actions";
+import {addIngredient, deleteAll, replaceFilling} from "../../services/actions/order-actions";
 import {useDrop} from "react-dnd";
-
-
-function getFirst(ingredients, type) {
-    const [first] = ingredients.filter((item) => item.type === type);
-    return first;
-}
-
-function getInitialComposition(ingredients) {
-    const bun = getFirst(ingredients, "bun");
-    const sauce = getFirst(ingredients, "sauce");
-    const main = getFirst(ingredients, "main");
-    return [bun, sauce, main].filter(item => item && item.type);
-}
+import OrderItem from "../Order-item/order-item";
 
 
 const BurgerConstructor = () => {
@@ -31,12 +19,6 @@ const BurgerConstructor = () => {
     const {bun, filling, price} = useSelector(state => state.order);
 
     const dispatch = useDispatch();
-    const {ingredients} = useSelector(state => state.ingredients);
-    
-    React.useEffect(() => {
-        dispatch(deleteAll());
-        getInitialComposition(ingredients).forEach(item => dispatch(addIngredient(item)));
-    }, [dispatch, ingredients]);
 
     const [{isHover}, dropTargetRef] = useDrop({
         accept: 'ingredient',
@@ -48,23 +30,29 @@ const BurgerConstructor = () => {
         }
     });
 
-    const onDelete = (id) => {
-        dispatch(deleteIngredient(id));
-    }
+    const onMoveCard = useCallback((dragIndex, hoverIndex) => {
+        const dragItem = filling[dragIndex];
+        const newFilling = [...filling];
+        newFilling.splice(dragIndex, 1);
+        newFilling.splice(hoverIndex, 0, dragItem);
+        dispatch(replaceFilling(newFilling))
+    }, [dispatch, filling]);
 
     const onCreateOrder = () => {
         const ingredientIds = filling.map(element => element._id);
         ingredientIds.push(bun._id);
         createOrder(ingredientIds).then((res) => {
             setOrderId(res.order.number);
+            setModalVisible(true);
         }).catch((e) => {
             setError(true);
         });
-        setModalVisible(true);
     }
 
     const closeModal = () => {
         setModalVisible(false);
+        dispatch(deleteAll());
+
     };
 
     return (
@@ -73,6 +61,9 @@ const BurgerConstructor = () => {
                 <Modal onClose={closeModal} title=''>
                     <OrderDetails orderId={orderId} error={error}/>
                 </Modal>
+            }
+            {!bun &&
+                    <div>Пожалуйста, перенесите сюда булку и ингредиенты для создания заказа</div>
             }
             <div className={`${styles.container}`} ref={dropTargetRef}>
                 <ul>
@@ -92,16 +83,10 @@ const BurgerConstructor = () => {
                 {filling &&
                     <li className='mb-4'>
                         <ul className={styles.scrollList}>
-                            {filling?.map((item) => {
+                            {filling?.map((item, index) => {
                                     return (
                                         <li className='mb-4' key={item._id}>
-                                            <DragIcon type="primary"/>
-                                            <ConstructorElement 
-                                                text={item.name} 
-                                                price={item.price}
-                                                thumbnail={item.image}
-                                                handleClose={() =>onDelete(item.id)}
-                                            />
+                                            <OrderItem key={`item-${item.id}`} item={item} index={index} moveCard={onMoveCard}/>
                                         </li>)
                             })}
                         </ul>
@@ -126,7 +111,7 @@ const BurgerConstructor = () => {
                     <CurrencyIcon type="primary"/>
                     <div className='ml-10'>
                         <Button htmlType="button" type="primary" size="large"
-                                onClick={onCreateOrder}>
+                                onClick={onCreateOrder} disabled={!bun}>
                             Оформить заказ
                         </Button>
                     </div>

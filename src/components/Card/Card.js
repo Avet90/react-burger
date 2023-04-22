@@ -38,13 +38,10 @@ const Card = ({item, onClick, setSelected}) => {
     return (
         <>
             <div className={styles.wrapper} style={{opacity}} onClick={onCardClick} ref={dragRef}>
+                {count > 0 &&
                 <div className={styles.wrapper_count}>
                     <Counter count={count} size="default"/>
                 </div>
-                {count > 0 &&
-                    <div className={styles.counter}>
-                        <Counter count={count} size="default"/>
-                    </div>
                 }
                 <div className={styles.wrapper_card}>
                     <img className='mb-1' src={item.image} alt={item.name}/>
