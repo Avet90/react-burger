@@ -3,7 +3,7 @@ import styles from './BurgerConstructor.module.css';
 import Modal from '../Modal/Modal'
 import React from 'react';
 import OrderDetails from '../OrderDetails/OrderDetails.js'
-import {IngredientsContext} from "../../utils/context";
+import {useSelector} from "react-redux";
 import {createOrder} from "../../utils/burger_api";
 
 
@@ -14,7 +14,7 @@ const BurgerConstructor = () => {
     const [orderId, setOrderId] = React.useState(0);
     const [error, setError] = React.useState(false);
 
-    const ingredients = React.useContext(IngredientsContext);
+    const {ingredients} = useSelector(state => state.ingredients);
 
     const withoutBuns = React.useMemo(
         () => ingredients.filter((item) => item.type !== "bun"),

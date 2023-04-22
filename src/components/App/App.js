@@ -3,34 +3,36 @@ import AppHeader from '../AppHeader/AppHeader';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor.js';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients.js';
 import {getIngredients} from '../../utils/burger_api';
-import {IngredientsContext} from "../../utils/context";
 import styles from './App.module.css'
+import {useDispatch, useSelector} from 'react-redux';
+import {loadIngredients} from "../../services/actions/ingredients";
+import {Loader} from "../Loader/loader";
+
 
 function App() {
-    const [error, setError] = React.useState(false);
-    const [ingredients, setIngredients] = React.useState([]);
+    const dispatch = useDispatch();
+    const {loadingStarted, loadingFailed} = useSelector(
+        state => state.ingredients
+    );
     
 
     React.useEffect(() => {
-        getIngredients().then((res) => {
-            setIngredients(res.data);
-        }).catch((e) => {
-            setError(true);
-        });
-    }, [])
+        dispatch(loadIngredients());
+    },
+    [dispatch]
+    );
 
     return (
         <>
-            {error && <div>Упс! Похоже, закончились ингридиенты... Попробуйте зайти позже.</div>}
             <AppHeader/>
-            <IngredientsContext.Provider value={ingredients}>
                 <main className={styles.wrapper}>
-                    <BurgerIngredients/>
+                {loadingFailed && <div>Упс! Похоже, закончились ингридиенты... Попробуйте зайти позже.</div>}
+                {!loadingFailed && loadingStarted && <Loader size="large"/>}
+                {!loadingFailed && !loadingStarted && <BurgerIngredients/>}
                     <div className='pt-25'>
                     <BurgerConstructor/>
                     </div>
                 </main>
-            </IngredientsContext.Provider>
         </ >
     );
 }

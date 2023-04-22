@@ -1,10 +1,10 @@
 import React from 'react';
+import {useSelector} from "react-redux";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './BurgerIngredients.module.css';
 import Modal from '../Modal/Modal.js'
 import IngredientSection from "../IngredientSection/IngredientSection.js";
 import IngredientDetails from "../IngredientDetails/IngredientDetails.js";
-import {IngredientsContext} from "../../utils/context";
 
 
 const tab1 = 'Булки';
@@ -17,7 +17,7 @@ const BurgerIngredients = () => {
     const [modalVisible, setModalVisible] = React.useState(false);
     const [selected, setSelected] = React.useState([])
 
-    const ingredients = React.useContext(IngredientsContext);
+    const {ingredients} = useSelector(state => state.ingredients);
 
 
     const bunMenu = React.useMemo(
