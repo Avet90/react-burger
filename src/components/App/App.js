@@ -6,6 +6,8 @@ import styles from './App.module.css'
 import {useDispatch, useSelector} from 'react-redux';
 import {loadIngredients} from "../../services/actions/ingredients-actions";
 import {Loader} from "../Loader/loader";
+import {DndProvider} from "react-dnd"
+import {HTML5Backend} from "react-dnd-html5-backend";
 
 
 function App() {
@@ -23,14 +25,16 @@ function App() {
     return (
         <>
             <AppHeader/>
+            <DndProvider backend={HTML5Backend}>
                 <main className={styles.wrapper}>
-                {isFailed && <div>Упс! Похоже, закончились ингридиенты... Попробуйте зайти позже.</div>}
-                {!isFailed && isLoading && <Loader size="large"/>}
-                {!isFailed && !isLoading && <BurgerIngredients/>}
+                    {isFailed && <div>Упс! Похоже, закончились ингридиенты... Попробуйте зайти позже.</div>}
+                    {!isFailed && isLoading && <Loader size="large"/>}
+                    {!isFailed && !isLoading && <BurgerIngredients/>}
                     <div className='pt-25'>
-                    <BurgerConstructor/>
+                        <BurgerConstructor/>
                     </div>
                 </main>
+            </DndProvider>
         </ >
     );
 }

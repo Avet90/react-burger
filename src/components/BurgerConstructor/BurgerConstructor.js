@@ -6,6 +6,8 @@ import OrderDetails from '../OrderDetails/OrderDetails.js'
 import {useSelector, useDispatch} from "react-redux";
 import {createOrder} from "../../utils/burger_api";
 import {addIngredient, deleteAll, deleteIngredient} from "../../services/actions/order-actions";
+import {useDrop} from "react-dnd";
+
 
 function getFirst(ingredients, type) {
     const [first] = ingredients.filter((item) => item.type === type);
@@ -30,10 +32,21 @@ const BurgerConstructor = () => {
 
     const dispatch = useDispatch();
     const {ingredients} = useSelector(state => state.ingredients);
+    
     React.useEffect(() => {
         dispatch(deleteAll());
         getInitialComposition(ingredients).forEach(item => dispatch(addIngredient(item)));
     }, [dispatch, ingredients]);
+
+    const [{isHover}, dropTargetRef] = useDrop({
+        accept: 'ingredient',
+        collect: monitor => ({
+            isHover: monitor.isOver()
+        }),
+        drop(item) {
+            dispatch(addIngredient(item))
+        }
+    });
 
     const onDelete = (id) => {
         dispatch(deleteIngredient(id));
@@ -61,7 +74,7 @@ const BurgerConstructor = () => {
                     <OrderDetails orderId={orderId} error={error}/>
                 </Modal>
             }
-            <div className={`${styles.container}`}>
+            <div className={`${styles.container}`} ref={dropTargetRef}>
                 <ul>
                     {bun &&
                     <li className='mb-4 mr-4'>
