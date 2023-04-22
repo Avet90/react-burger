@@ -5,9 +5,19 @@ import React from 'react';
 import OrderDetails from '../OrderDetails/OrderDetails.js'
 import {useSelector, useDispatch} from "react-redux";
 import {createOrder} from "../../utils/burger_api";
-import {addIngredient} from "../../services/actions/order-actions";
+import {addIngredient, deleteAll, deleteIngredient} from "../../services/actions/order-actions";
 
+function getFirst(ingredients, type) {
+    const [first] = ingredients.filter((item) => item.type === type);
+    return first;
+}
 
+function getInitialComposition(ingredients) {
+    const bun = getFirst(ingredients, "bun");
+    const sauce = getFirst(ingredients, "sauce");
+    const main = getFirst(ingredients, "main");
+    return [bun, sauce, main].filter(item => item && item.type);
+}
 
 
 const BurgerConstructor = () => {
@@ -21,8 +31,13 @@ const BurgerConstructor = () => {
     const dispatch = useDispatch();
     const {ingredients} = useSelector(state => state.ingredients);
     React.useEffect(() => {
-        ingredients.forEach(item => dispatch(addIngredient(item)));
+        dispatch(deleteAll());
+        getInitialComposition(ingredients).forEach(item => dispatch(addIngredient(item)));
     }, [dispatch, ingredients]);
+
+    const onDelete = (id) => {
+        dispatch(deleteIngredient(id));
+    }
 
     const onCreateOrder = () => {
         const ingredientIds = filling.map(element => element._id);
@@ -61,18 +76,24 @@ const BurgerConstructor = () => {
                         </div>
                     </li>
                 }
+                {filling &&
                     <li className='mb-4'>
                         <ul className={styles.scrollList}>
                             {filling?.map((item) => {
                                     return (
                                         <li className='mb-4' key={item._id}>
                                             <DragIcon type="primary"/>
-                                            <ConstructorElement text={item.name} price={item.price}
-                                                                thumbnail={item.image}/>
+                                            <ConstructorElement 
+                                                text={item.name} 
+                                                price={item.price}
+                                                thumbnail={item.image}
+                                                handleClose={() =>onDelete(item.id)}
+                                            />
                                         </li>)
                             })}
                         </ul>
                     </li>
+                    }
                     {bun &&
                     <li className='mb-4 mr-4'>
                         <div className={styles.borderEdge}>
