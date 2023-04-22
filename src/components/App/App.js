@@ -2,18 +2,16 @@ import React from 'react';
 import AppHeader from '../AppHeader/AppHeader';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor.js';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients.js';
-import {getIngredients} from '../../utils/burger_api';
 import styles from './App.module.css'
 import {useDispatch, useSelector} from 'react-redux';
-import {loadIngredients} from "../../services/actions/ingredients";
+import {loadIngredients} from "../../services/actions/ingredients-actions";
 import {Loader} from "../Loader/loader";
 
 
 function App() {
     const dispatch = useDispatch();
-    const {loadingStarted, loadingFailed} = useSelector(
-        state => state.ingredients
-    );
+    const {isLoading, isFailed} = useSelector(state => state.ingredients);
+
     
 
     React.useEffect(() => {
@@ -26,9 +24,9 @@ function App() {
         <>
             <AppHeader/>
                 <main className={styles.wrapper}>
-                {loadingFailed && <div>Упс! Похоже, закончились ингридиенты... Попробуйте зайти позже.</div>}
-                {!loadingFailed && loadingStarted && <Loader size="large"/>}
-                {!loadingFailed && !loadingStarted && <BurgerIngredients/>}
+                {isFailed && <div>Упс! Похоже, закончились ингридиенты... Попробуйте зайти позже.</div>}
+                {!isFailed && isLoading && <Loader size="large"/>}
+                {!isFailed && !isLoading && <BurgerIngredients/>}
                     <div className='pt-25'>
                     <BurgerConstructor/>
                     </div>
