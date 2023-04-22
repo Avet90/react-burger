@@ -13,32 +13,65 @@ const tab3 = 'Начинки';
 
 const BurgerIngredients = () => {
 
-    const [current, setCurrent] = React.useState("bun");
+    const [currentTab, setCurrentTab] = React.useState();
     const [modalVisible, setModalVisible] = React.useState(false);
     const [selected, setSelected] = React.useState([])
 
     const {ingredients} = useSelector(state => state.ingredients);
 
 
-    const bunMenu = React.useMemo(
-       () => ingredients.filter((el) => el.type === "bun"),[ingredients]);
-    const sauceMenu = React.useMemo( 
-       () => ingredients.filter((el) => el.type === "sauce"), [ingredients]);
-    const mainMenu = React.useMemo( 
-       () => ingredients.filter((el) => el.type === "main"),[ingredients]);
+    const buns = React.useMemo(
+       () => ingredients.filter((item) => item.type === "bun"),[ingredients]
+    );
+
+    const sauces = React.useMemo( 
+       () => ingredients.filter((item) => item.type === "sauce"), [ingredients]
+    );
+    const mains = React.useMemo( 
+       () => ingredients.filter((item) => item.type === "main"),[ingredients]
+    );
 
     const closeModal = () => {
         setModalVisible(false);
     };
 
-    const bunRef = React.useRef();
-    const sauceRef = React.useRef();
-    const mainRef = React.useRef();
+    const scrollList = React.useRef(null);
+    const bunsList = React.useRef(null);
+    const saucesList = React.useRef(null);
+    const mainsList = React.useRef(null);
 
-    function scrollTabClick(e, tab) {
-        setCurrent(e);
-        tab.current.scrollIntoView({ behavior: "smooth" });
-      }
+    const typeListRefs = new Map();
+    typeListRefs.set(tab1, bunsList);
+    typeListRefs.set(tab2, saucesList);
+    typeListRefs.set(tab3, mainsList);
+
+    // Переключение вкладок при скроллинге
+    React.useEffect(() => {
+        const typeTitleInViewport = {};
+        const callback = (entries) => {
+            entries.forEach((entry) => {
+                typeTitleInViewport[entry.target.id] = entry.isIntersecting;
+            })
+            for (let typeTitle of Object.keys(typeTitleInViewport)) {
+                if (typeTitleInViewport[typeTitle]) {
+                    setCurrentTab(typeTitle);
+                }
+            }
+        };
+
+        const options = {
+            root: scrollList.current,
+            rootMargin: '20% 0% -80% 0%',
+            threshold: 0
+        };
+        const observer = new IntersectionObserver(callback, options);
+        typeListRefs.forEach((typeTitle) => observer.observe(typeTitle.current));
+    });
+
+    const scrollTo = (e, ref) => {
+        setCurrentTab(e);
+        ref.current.scrollIntoView({ behavior: "smooth" });
+    };
 
     return (
         <>
@@ -55,29 +88,29 @@ const BurgerIngredients = () => {
                 </div>
                 <div className='mb-10'>
                     <div className={styles.wrapper_tabs}>
-                        <Tab value="bun" active={current === "bun"} onClick={(e) => scrollTabClick(e, bunRef)} >
-                            Булки
+                        <Tab value={tab1} active={currentTab === tab1} onClick={(e) => scrollTo(e, bunsList)} >
+                        {tab1}
                         </Tab>
-                        <Tab value="sauce" active={current === "sauce"} onClick={(e) => scrollTabClick(e, sauceRef)} >
-                            Соусы
+                        <Tab value={tab2} active={currentTab === tab2} onClick={(e) => scrollTo(e, saucesList)} >
+                        {tab2}
                         </Tab>
-                        <Tab value="main" active={current === "main"} onClick={(e) => scrollTabClick(e, mainRef)} >
-                            Начинки
+                        <Tab value={tab3} active={currentTab === tab3} onClick={(e) => scrollTo(e, mainsList)} >
+                        {tab3}
                         </Tab>
                     </div>
                 </div>
-                <section className={styles.scrollList}>
+                <section className={styles.scrollList} ref={scrollList}>
                     <div>
-                        <h2 className="text text_type_main-medium" ref={bunRef}>Булки</h2>
-                        <IngredientSection data={bunMenu} type='bun' onClick={setModalVisible} setSelected={setSelected}/>
+                        <h2 className="text text_type_main-medium" ref={bunsList} id={tab1}>Булки</h2>
+                        <IngredientSection data={buns} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                     <div>
-                        <h2 className="text text_type_main-medium" ref={sauceRef}>Соусы</h2>
-                        <IngredientSection data={sauceMenu} type='sauce' onClick={setModalVisible} setSelected={setSelected}/>
+                        <h2 className="text text_type_main-medium" ref={saucesList} id={tab2}>Соусы</h2>
+                        <IngredientSection data={sauces} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                     <div>
-                        <h2 className="text text_type_main-medium" ref={mainRef}>Начинки</h2>
-                        <IngredientSection data={mainMenu} type='main' onClick={setModalVisible} setSelected={setSelected}/>
+                        <h2 className="text text_type_main-medium" ref={mainsList} id={tab3}>Начинки</h2>
+                        <IngredientSection data={mains} onClick={setModalVisible} setSelected={setSelected}/>
                     </div>
                 </section>
             </section>
