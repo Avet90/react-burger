@@ -4,22 +4,28 @@ import styles from './BurgerIngredients.module.css';
 import Modal from '../Modal/Modal.js'
 import IngredientSection from "../IngredientSection/IngredientSection.js";
 import IngredientDetails from "../IngredientDetails/IngredientDetails.js";
-import {ingredientArray} from "../../utils/prop-types";
+import {IngredientsContext} from "../../utils/context";
+
 
 const tab1 = 'Булки';
 const tab2 = 'Соусы';
 const tab3 = 'Начинки';
 
-const BurgerIngredients = ({data}) => {
+const BurgerIngredients = () => {
 
     const [current, setCurrent] = React.useState("bun");
-
-    const bunMenu = data.filter((el) => el.type === "bun");
-    const sauceMenu = data.filter((el) => el.type === "sauce");
-    const mainMenu = data.filter((el) => el.type === "main");
-
     const [modalVisible, setModalVisible] = React.useState(false);
     const [selected, setSelected] = React.useState([])
+
+    const ingredients = React.useContext(IngredientsContext);
+
+
+    const bunMenu = React.useMemo(
+       () => ingredients.filter((el) => el.type === "bun"),[ingredients]);
+    const sauceMenu = React.useMemo( 
+       () => ingredients.filter((el) => el.type === "sauce"), [ingredients]);
+    const mainMenu = React.useMemo( 
+       () => ingredients.filter((el) => el.type === "main"),[ingredients]);
 
     const closeModal = () => {
         setModalVisible(false);
@@ -79,8 +85,5 @@ const BurgerIngredients = ({data}) => {
     )
 }
 
-BurgerIngredients.propTypes = {
-    data: ingredientArray.isRequired,
-};
 
 export default BurgerIngredients;
