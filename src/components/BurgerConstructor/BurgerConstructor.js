@@ -3,8 +3,10 @@ import styles from './BurgerConstructor.module.css';
 import Modal from '../Modal/Modal'
 import React from 'react';
 import OrderDetails from '../OrderDetails/OrderDetails.js'
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import {createOrder} from "../../utils/burger_api";
+import {addIngredient} from "../../services/actions/order-actions";
+
 
 
 
@@ -14,17 +16,17 @@ const BurgerConstructor = () => {
     const [orderId, setOrderId] = React.useState(0);
     const [error, setError] = React.useState(false);
 
-    const {ingredients} = useSelector(state => state.ingredients);
+    const {bun, filling, price} = useSelector(state => state.order);
 
-    const withoutBuns = React.useMemo(
-        () => ingredients.filter((item) => item.type !== "bun"),
-        [ingredients]
-    );
+    const dispatch = useDispatch();
+    const {ingredients} = useSelector(state => state.ingredients);
+    React.useEffect(() => {
+        ingredients.forEach(item => dispatch(addIngredient(item)));
+    }, [dispatch, ingredients]);
 
     const onCreateOrder = () => {
-        const ingredientIds = withoutBuns.map(element => element._id);
-        ingredientIds.push("60d3b41abdacab0026a733c6");
-        ingredientIds.push("60d3b41abdacab0026a733c6");
+        const ingredientIds = filling.map(element => element._id);
+        ingredientIds.push(bun._id);
         createOrder(ingredientIds).then((res) => {
             setOrderId(res.order.number);
         }).catch((e) => {
@@ -46,43 +48,47 @@ const BurgerConstructor = () => {
             }
             <div className={`${styles.container}`}>
                 <ul>
+                    {bun &&
                     <li className='mb-4 mr-4'>
                         <div className={styles.borderEdge}>
                             <ConstructorElement
                                 type="top"
                                 isLocked={true}
-                                text="Краторная булка N-200i"
-                                price={20}
-                                thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
+                                text={`${bun.name} (верх)`}
+                                price={bun.price}
+                                thumbnail={bun.image}
                             />
                         </div>
                     </li>
+                }
                     <li className='mb-4'>
                         <ul className={styles.scrollList}>
-                            {withoutBuns.map((elem) => {
+                            {filling?.map((item) => {
                                     return (
-                                        <li className='mb-4' key={elem._id}>
+                                        <li className='mb-4' key={item._id}>
                                             <DragIcon type="primary"/>
-                                            <ConstructorElement text={elem.name} price={elem.price}
-                                                                thumbnail={elem.image}/>
+                                            <ConstructorElement text={item.name} price={item.price}
+                                                                thumbnail={item.image}/>
                                         </li>)
                             })}
                         </ul>
                     </li>
+                    {bun &&
                     <li className='mb-4 mr-4'>
                         <div className={styles.borderEdge}>
                             <ConstructorElement
                                 type="bottom"
                                 isLocked={true}
-                                text="Краторная булка N-200i"
-                                price={20}
-                                thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
+                                text={`${bun.name} (низ)`}
+                                price={bun.price}
+                                thumbnail={bun.image}
                             />
                         </div>
                     </li>
+                    }
                 </ul>
                 <section className={styles.bottomBoxContainer}>
-                    <p className="text text_type_digits-medium">610</p>
+                    <p className="text text_type_digits-medium">{price}</p>
                     <CurrencyIcon type="primary"/>
                     <div className='ml-10'>
                         <Button htmlType="button" type="primary" size="large"
