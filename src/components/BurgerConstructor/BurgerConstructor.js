@@ -85,7 +85,7 @@ const BurgerConstructor = () => {
                         <ul className={styles.scrollList}>
                             {filling?.map((item, index) => {
                                     return (
-                                        <li className='mb-4' key={item._id}>
+                                        <li className='mb-4' key={item.id}>
                                             <OrderItem key={`item-${item.id}`} item={item} index={index} moveCard={onMoveCard}/>
                                         </li>)
                             })}
