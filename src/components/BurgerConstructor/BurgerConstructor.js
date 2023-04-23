@@ -7,7 +7,7 @@ import {useSelector, useDispatch} from "react-redux";
 import {createOrder} from "../../utils/burger_api";
 import {addIngredient, deleteAll, replaceFilling} from "../../services/actions/order-actions";
 import {useDrop} from "react-dnd";
-import OrderItem from "../Order-item/order-item";
+import OrderItem from "../OrderItem/OrderItem";
 
 
 const BurgerConstructor = () => {

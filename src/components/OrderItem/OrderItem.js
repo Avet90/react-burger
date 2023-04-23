@@ -7,7 +7,7 @@ import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger
 import {ingredientType} from "../../utils/prop-types";
 import PropTypes from "prop-types";
 
-import styles from "./order-item.module.css";
+import styles from "./OrderItem.module.css";
 
 const OrderItem = ({item, index, moveCard}) => {
 
