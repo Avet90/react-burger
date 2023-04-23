@@ -76,7 +76,7 @@ const BurgerIngredients = () => {
     return (
         <>
             {modalVisible &&
-                <Modal onClose={closeModal} title="Детали заказа">
+                <Modal onClose={closeModal} title="Детали ингредиента">
                     <IngredientDetails item={selected}/>
                 </Modal>}
 
