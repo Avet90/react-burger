@@ -1,15 +1,23 @@
-const NORMA_API = "https://norma.nomoreparties.space/api";
+// const NORMA_API = "https://norma.nomoreparties.space/api";
+
+export const BASE_URL = "https://norma.nomoreparties.space/api";
+
 
 const checkResponse = (res) => {
   return res.ok ? res.json() : res.json().then((error) => Promise.reject(error));
 };
 
-export const getIngredients = () => {
-  return fetch(`${NORMA_API}/ingredients`).then(checkResponse);
+const request = async (endpoint, options) => {
+  // принимает два аргумента: урл и объект опций, как и `fetch`
+  return fetch(`${BASE_URL}/${endpoint}`, options).then(checkResponse)
+}
+
+export const getIngredientsRequest = async () => {
+  return request('ingredients');
 };
 
-export const createOrder = (ingredientIds) => {
-  return fetch(`${NORMA_API}/orders`, {
+export const createOrderRequest = async (ingredientIds) => {
+  return request('orders', {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -17,5 +25,5 @@ export const createOrder = (ingredientIds) => {
     body: JSON.stringify({
       "ingredients": ingredientIds
     })
-  }).then(checkResponse);
+  });
 };

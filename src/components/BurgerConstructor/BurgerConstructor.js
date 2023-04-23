@@ -4,19 +4,15 @@ import Modal from '../Modal/Modal'
 import React, {useCallback} from 'react';
 import OrderDetails from '../OrderDetails/OrderDetails.js'
 import {useSelector, useDispatch} from "react-redux";
-import {createOrder} from "../../utils/burger_api";
-import {addIngredient, deleteAll, replaceFilling} from "../../services/actions/order-actions";
+import {addIngredient, deleteAll, replaceFilling, createOrder} from "../../services/actions/order-actions";
 import {useDrop} from "react-dnd";
 import OrderItem from "../OrderItem/OrderItem";
 
 
 const BurgerConstructor = () => {
 
-    const [modalVisible, setModalVisible] = React.useState(false);
-    const [orderId, setOrderId] = React.useState(0);
-    const [error, setError] = React.useState(false);
 
-    const {bun, filling, price} = useSelector(state => state.order);
+    const {bun, filling, price, isFailed, orderId} = useSelector(state => state.order);
 
     const dispatch = useDispatch();
 
@@ -39,27 +35,19 @@ const BurgerConstructor = () => {
     }, [dispatch, filling]);
 
     const onCreateOrder = () => {
-        const ingredientIds = filling.map(element => element._id);
-        ingredientIds.push(bun._id);
-        createOrder(ingredientIds).then((res) => {
-            setOrderId(res.order.number);
-            setModalVisible(true);
-        }).catch((e) => {
-            setError(true);
-        });
+        dispatch(createOrder(bun, filling));
     }
 
     const closeModal = () => {
-        setModalVisible(false);
         dispatch(deleteAll());
 
     };
 
     return (
         <>
-            {modalVisible &&
+            {orderId &&
                 <Modal onClose={closeModal} title=''>
-                    <OrderDetails orderId={orderId} error={error}/>
+                    <OrderDetails orderId={orderId} error={isFailed}/>
                 </Modal>
             }
             {!bun &&
