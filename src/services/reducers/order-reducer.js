@@ -17,15 +17,18 @@ const initialState = {
     orderId: null
 };
 
-function getPrice(ingredient) {
-    return ingredient ? ingredient.price : 0;
-}
 
-function calculatePrice(bun, filling, ingredient) {
-    return getPrice(bun) * 2 + filling?.reduce((acc, obj) => acc + getPrice(obj), 0) + getPrice(ingredient);
-}
 
 export const orderReducer = (state = initialState, action) => {
+
+    function getPrice(ingredient) {
+        return ingredient ? ingredient.price : 0;
+    }
+    
+    function calculatePrice(bun, filling, ingredient) {
+        return getPrice(bun) * 2 + filling?.reduce((acc, obj) => acc + getPrice(obj), 0) + getPrice(ingredient);
+    }
+
     switch (action.type) {
         case ADD_INGREDIENT: {
             if (action.payload.type === 'bun') {
