@@ -2,32 +2,39 @@ import React from 'react';
 import AppHeader from '../AppHeader/AppHeader';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor.js';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients.js';
-import {getIngredients} from '../../utils/burger_api';
 import styles from './App.module.css'
+import {useDispatch, useSelector} from 'react-redux';
+import {loadIngredients} from "../../services/actions/ingredients-actions";
+import {Loader} from "../Loader/loader";
+import {DndProvider} from "react-dnd"
+import {HTML5Backend} from "react-dnd-html5-backend";
+
 
 function App() {
-    const [error, setError] = React.useState(false);
-    const [ingredients, setIngredients] = React.useState([]);
+    const dispatch = useDispatch();
+    const {isLoading, isFailed} = useSelector(state => state.ingredients);
+
+    
 
     React.useEffect(() => {
-        getIngredients().then((res) => {
-            setIngredients(res.data);
-        }).catch((e) => {
-            setError(true);
-            console.log(e)
-        });
-    }, [])
+        dispatch(loadIngredients());
+    },
+    [dispatch]
+    );
 
     return (
         <>
-            {error && <div>Упс! Похоже, закончились ингридиенты... Попробуйте зайти позже.</div>}
             <AppHeader/>
-            <main className={styles.wrapper}>
-                <BurgerIngredients data={ingredients}/>
-                <div className='pt-25'>
-                    <BurgerConstructor data={ingredients}/>
-                </div>
-            </main>
+            <DndProvider backend={HTML5Backend}>
+                <main className={styles.wrapper}>
+                    {isFailed && <div>Упс! Похоже, закончились ингридиенты... Попробуйте зайти позже.</div>}
+                    {!isFailed && isLoading && <Loader size="large"/>}
+                    {!isFailed && !isLoading && <BurgerIngredients/>}
+                    <div className='pt-25'>
+                        <BurgerConstructor/>
+                    </div>
+                </main>
+            </DndProvider>
         </ >
     );
 }

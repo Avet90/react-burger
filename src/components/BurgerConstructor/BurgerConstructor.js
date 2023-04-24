@@ -1,70 +1,105 @@
-import {Button, ConstructorElement, CurrencyIcon, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import {Button, ConstructorElement, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './BurgerConstructor.module.css';
 import Modal from '../Modal/Modal'
-import React from 'react';
+import React, {useCallback} from 'react';
 import OrderDetails from '../OrderDetails/OrderDetails.js'
-import {ingredientArray} from "../../utils/prop-types";
+import {useSelector, useDispatch} from "react-redux";
+import {addIngredient, deleteAll, replaceFilling, createOrder} from "../../services/actions/order-actions";
+import {useDrop} from "react-dnd";
+import OrderItem from "../OrderItem/OrderItem";
 
-const BurgerConstructor = ({data}) => {
 
-    const [modalVisible, setModalVisible] = React.useState(false);
+const BurgerConstructor = () => {
+
+
+    const {bun, filling, price, isFailed, orderId} = useSelector(state => state.order);
+
+    const dispatch = useDispatch();
+
+    const [{isHover}, dropTargetRef] = useDrop({
+        accept: 'ingredient',
+        collect: monitor => ({
+            isHover: monitor.isOver()
+        }),
+        drop(item) {
+            dispatch(addIngredient(item))
+        }
+    });
+
+    const onMoveCard = useCallback((dragIndex, hoverIndex) => {
+        const dragItem = filling[dragIndex];
+        const newFilling = [...filling];
+        newFilling.splice(dragIndex, 1);
+        newFilling.splice(hoverIndex, 0, dragItem);
+        dispatch(replaceFilling(newFilling))
+    }, [dispatch, filling]);
+
+    const onCreateOrder = () => {
+        dispatch(createOrder(bun, filling));
+    }
 
     const closeModal = () => {
-        setModalVisible(false);
+        dispatch(deleteAll());
+
     };
 
     return (
         <>
-            {modalVisible &&
+            {orderId &&
                 <Modal onClose={closeModal} title=''>
-                    <OrderDetails/>
+                    <OrderDetails orderId={orderId} error={isFailed}/>
                 </Modal>
             }
-            <div className={`${styles.container}`}>
+            {!bun &&
+                    <div>Пожалуйста, перенесите сюда булку и ингредиенты для создания заказа</div>
+            }
+            <div className={`${styles.container}`} ref={dropTargetRef}>
                 <ul>
+                    {bun &&
                     <li className='mb-4 mr-4'>
                         <div className={styles.borderEdge}>
                             <ConstructorElement
                                 type="top"
                                 isLocked={true}
-                                text="Краторная булка N-200i (верх)"
-                                price={20}
-                                thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
+                                text={`${bun.name} (верх)`}
+                                price={bun.price}
+                                thumbnail={bun.image}
                             />
                         </div>
                     </li>
+                }
+                {filling &&
                     <li className='mb-4'>
                         <ul className={styles.scrollList}>
-                            {data.map((elem) => {
-                                if (elem.type !== 'bun') {
+                            {filling?.map((item, index) => {
                                     return (
-                                        <li className='mb-4' key={elem._id}>
-                                            <DragIcon type="primary"/>
-                                            <ConstructorElement text={elem.name} price={elem.price}
-                                                                thumbnail={elem.image}/>
+                                        <li className='mb-4' key={item.id}>
+                                            <OrderItem key={`item-${item.id}`} item={item} index={index} moveCard={onMoveCard}/>
                                         </li>)
-                                }
                             })}
                         </ul>
                     </li>
-                    <li className='mb-4 ml-8'>
-                        <div>
+                    }
+                    {bun &&
+                    <li className='mb-4 mr-4'>
+                        <div className={styles.borderEdge}>
                             <ConstructorElement
                                 type="bottom"
                                 isLocked={true}
-                                text="Краторная булка N-200i (низ)"
-                                price={20}
-                                thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
+                                text={`${bun.name} (низ)`}
+                                price={bun.price}
+                                thumbnail={bun.image}
                             />
                         </div>
                     </li>
+                    }
                 </ul>
                 <section className={styles.bottomBoxContainer}>
-                    <p className="text text_type_digits-medium">610</p>
+                    <p className="text text_type_digits-medium">{price}</p>
                     <CurrencyIcon type="primary"/>
                     <div className='ml-10'>
                         <Button htmlType="button" type="primary" size="large"
-                                onClick={() => setModalVisible(!modalVisible)}>
+                                onClick={onCreateOrder} disabled={!bun}>
                             Оформить заказ
                         </Button>
                     </div>
@@ -74,8 +109,5 @@ const BurgerConstructor = ({data}) => {
     )
 }
 
-BurgerConstructor.propTypes = {
-    data: ingredientArray.isRequired
-};
 
 export default BurgerConstructor;
