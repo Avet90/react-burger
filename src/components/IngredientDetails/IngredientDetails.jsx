@@ -1,6 +1,7 @@
 import ingredientDetailsStyles from './IngredientDetails.module.css';
 
 export default function IngredientDetails({ ingredient }) {
+
   return (
     <div className={`${ingredientDetailsStyles.container}`} >
       <img

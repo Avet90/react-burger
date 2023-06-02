@@ -23,6 +23,8 @@ export default function CategoryContainer({ sortedIngredients, openIngredientDet
       ))}
     </ul>
   );
+
+  
 };
 
 CategoryContainer.propTypes = {

@@ -6,7 +6,7 @@ import IngredientDetails from '../../components/IngredientDetails/IngredientDeta
 export default function IngredientDetailsPage() {
   const { id } = useParams();
   const ingredients = useSelector(store => store.menu.items);
-  const ingredient = ingredients.find(item => item._id === id);
+  const ingredient = ingredients.find((item) => item._id === id);
 
   return (
     <>
@@ -21,3 +21,4 @@ export default function IngredientDetailsPage() {
     </>
   )
 }
+

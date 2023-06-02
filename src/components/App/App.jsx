@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from 'react-redux';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import appStyles from "./App.module.css";
@@ -10,6 +10,7 @@ import { getMenu } from "../../services/actions/menu";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
+import Modal from "../Modal/Modal";
 import IngredientDetailsPage from "../../pages/IngredientDetailsPage/IngredientDetailsPage";
 import Login from "../../pages/Login/Login";
 import Register from "../../pages/Register/Register";
@@ -20,10 +21,12 @@ import ProtectedRoute from "../ProtectedRoute";
 import Page404 from "../../pages/Page404/Page404";
 
 export default function App() {
+
   const dispatch = useDispatch();
   const location = useLocation();
+  const state = location.state;
  
-  const background = location.state?.background;
+  const background = state?.background;
 
   useEffect(() => {
     if (getCookie('accessToken')) {
@@ -39,7 +42,7 @@ export default function App() {
     <>
       <AppHeader />
       <main className={appStyles.main}>
-        <Routes location={background ?? location}>
+        <Routes location={background || location}>
           <Route path="/" element={
             <DndProvider backend={HTML5Backend}>
               <BurgerIngredients />
@@ -58,4 +61,5 @@ export default function App() {
       </main>
     </>
   )
+
 }

@@ -10,7 +10,6 @@ import CategoryContainer from "./CategoryContainer/CategoryContainer";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
 export default function BurgerIngredients() {
-  //const { id } = useParams(); почему-то не работает, пришлось сделать костыль (стр 45-53)
   const [opened, setOpened] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -34,6 +33,7 @@ export default function BurgerIngredients() {
       ingredient: ingredient
     });
     setOpened(true)
+    console.log(ingredient)
   };
 
   function closeIngredientDetails() {

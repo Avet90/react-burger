@@ -6,6 +6,7 @@ export default function ProtectedRoute({ children, anonymous = false }) {
 
   const location = useLocation();
   const from = location.state?.from || '/';
+  
   if (anonymous && isAuthorized) {
     return <Navigate to={ from } />
   }

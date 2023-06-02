@@ -30,7 +30,7 @@ export const menuReducer = (state = initialState, action) => {
       return {
         ...state,
         menuRequest: false,
-        items: action.items
+        items: [...action.items]
       }
     }
     case GET_INGREDIENTS_FAILED: {

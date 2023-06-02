@@ -13,16 +13,16 @@ export const INCREASE_COUNTER = "INCREASE_COUNTER";
 export const DECREASE_COUNTER = "DECREASE_COUNTER";
 
 export function getMenu() {
-  return async (dispatch) => {
-    dispatch({ type: GET_INGREDIENTS_REQUEST });
-    getDataFromServer()
-      .then((res) => {
+  return function (dispatch) {
+    dispatch({ 
+      type: GET_INGREDIENTS_REQUEST
+     });
+    getDataFromServer().then((res) => {
         dispatch({
           type: GET_INGREDIENTS_SUCCESS,
           items: res.data
-        })
-      })
-      .catch(err => {
+        });
+      }).catch(err => {
         dispatch({
           type: GET_INGREDIENTS_FAILED,
         })

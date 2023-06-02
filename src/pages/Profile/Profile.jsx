@@ -8,9 +8,8 @@ import { menuClassifier } from '../../utils/utils';
 import { useForm } from '../../hooks/useForm';
 
 export default function Profile() {
-  const user = useSelector(store => store.auth.user);
+  const {isAuthorized, user, logoutRequest} = useSelector(store => store.auth);
   const {values, setValues, handleChange } = useForm({ name: user.name, email: user.email, password: '' });
-  const isAuthorized = useSelector(store => store.auth.isAuthorized);
 
   const isProfileChanged = useMemo(() => user.email !== values.email
     || user.name !== values.name, [user, values]
@@ -41,9 +40,6 @@ export default function Profile() {
     dispatch(logout());
   };
 
-  const logoutRequest = useSelector(store => store.auth.logoutRequest);
-  const logoutSuccess = useSelector(store => store.auth.logoutSuccess);
-
   if (logoutRequest) {
     return (
       <h3 className={`text text_type_main-large mt-10`}>
@@ -52,7 +48,7 @@ export default function Profile() {
     )
   };
 
-  if (logoutSuccess) {
+  if (!isAuthorized) {
     return <Navigate to='/login' />
   };
 
