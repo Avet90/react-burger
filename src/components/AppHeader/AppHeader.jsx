@@ -11,7 +11,7 @@ import { menuClassifier } from '../../utils/utils';
 
 export default function AppHeader() {
   const rootLink = useMatch('/');
-  const ordersLink = useMatch('/orders-feed');
+  const feedLink = useMatch('/feed/*');
   const profileLink = useMatch('/profile/*');
   const registerLink = useMatch('/register');
   const loginLink = useMatch('/login');
@@ -32,9 +32,9 @@ export default function AppHeader() {
             </NavLink>
           </li>
           <li className={appHeaderStyles.item}>
-            <NavLink to='/orders-feed' className={`${appHeaderStyles.link} pl-5 pr-5 pt-4 pb-4 mt-4 mr-2 mb-4`}>
-              <ListIcon type={menuClassifier('icon', ordersLink)} />
-              <p className={`ml-2 text text_type_main-default ${menuClassifier('text', ordersLink)}`}>
+            <NavLink to='/feed' className={`${appHeaderStyles.link} pl-5 pr-5 pt-4 pb-4 mt-4 mr-2 mb-4`}>
+              <ListIcon type={menuClassifier('icon', feedLink)} />
+              <p className={`ml-2 text text_type_main-default ${menuClassifier('text', feedLink)}`}>
                 Лента заказов
               </p>
             </NavLink>

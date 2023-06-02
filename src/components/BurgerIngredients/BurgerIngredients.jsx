@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import burgerIngredientsStyles from "./BurgerIngredients.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { OPEN_INGREDIENT_DETAILS, CLOSE_INGREDIENT_DETAILS } from "../../services/actions/menu";
 import { SET_COUNT } from '../../services/actions/menu';
 import Modal from "../Modal/Modal";
@@ -92,7 +92,7 @@ export default function BurgerIngredients() {
 
   return (
     <section className={burgerIngredientsStyles.section}>
-      <h2 className={`${burgerIngredientsStyles.title} text text_type_main-large mt-10 mb-5`}>
+      <h2 className= "text text_type_main-large mt-10 mb-5">
         Соберите бургер
       </h2>
       <Tabs currentTab={currentTab} setCurrentTab={setTabByClick} />
@@ -100,15 +100,15 @@ export default function BurgerIngredients() {
         onScroll={handleScroll}
         ref={ingredientsScrollRef}
       >
-        <div className={`pt-10 ${burgerIngredientsStyles.container}`}>
+        <div className= "pt-10" >
           <h2 className={'text text_type_main-medium pb-6'} id='bun'>Булки</h2>
           <CategoryContainer sortedIngredients={buns} openIngredientDetails={openIngredientDetails} />
         </div>
-        <div className={`pt-10 ${burgerIngredientsStyles.container}`}>
+        <div className= "pt-10" >
           <h2 className={'text text_type_main-medium pb-6'} id='main'>Начинки</h2>
           <CategoryContainer sortedIngredients={fills} openIngredientDetails={openIngredientDetails} />
         </div>
-        <div className={`pt-10 ${burgerIngredientsStyles.container}`}>
+        <div className= "pt-10" >
           <h2 className={'text text_type_main-medium pb-6'} id='sauce'>Соусы</h2>
           <CategoryContainer sortedIngredients={sauces} openIngredientDetails={openIngredientDetails} />
         </div>

@@ -18,7 +18,24 @@ export function menuClassifier(type, link) {
       return null
     }
   }
-}
+};
+
+export function orderStatusSelector(status) {
+  switch (status) {
+    case 'done': {
+      return 'Выполнен'
+    }
+    case 'pending': {
+      return 'Готовится'
+    }
+    case 'created': {
+      return 'Создан'
+    }
+    default: {
+      return 'Выполнен'
+    }
+  }
+};
 
 export function isBun(ingredient) {
   if (ingredient.type === "bun") {
@@ -115,4 +132,50 @@ export function setCookie(name, value, props) {
 
 export function deleteCookie(name) {
   setCookie(name, null, { expires: -1 });
-}
+};
+
+export function filterOrderStatus(orders) {
+  const res = { done: [], pending: [] }
+  orders.filter(item => {
+    return item.status === "done"
+      ? res.done.push(item.number)
+      : res.pending.push(item.number)
+  })
+  return res
+};
+
+export function consolidate(arr) {
+  let res = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (res.indexOf(arr[i]) === -1) {
+      res.push(arr[i]);
+    }
+  }
+  return res
+};
+
+export function formattedDate(date) {
+  const createdAt = new Date(date);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const diffTime = Math.ceil(
+    (today.getTime() - createdAt.getTime()) / (60 * 60 * 24 * 1000)
+  );
+  const hours =
+    createdAt.getHours() > 9
+      ? createdAt.getHours()
+      : `0${createdAt.getHours()}`;
+  const min =
+    createdAt.getMinutes() > 9
+      ? createdAt.getMinutes()
+      : `0${createdAt.getMinutes()}`;
+  const getDays = (days) =>
+    days === 0
+      ? "Сегодня"
+      : days === 1
+        ? "Вчера"
+        : days > 1
+          ? `${days} дня(-ей) назад`
+          : "Ошибка";
+  return `${getDays(diffTime)}, ${hours}:${min}`;
+};

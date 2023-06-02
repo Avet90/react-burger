@@ -10,7 +10,8 @@ import { getMenu } from "../../services/actions/menu";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import Modal from "../Modal/Modal";
+import Feed from "../../pages/Feed/Feed";
+import SingleOrderPage from "../../pages/SingleOrderPage/SingleOrderPage";
 import IngredientDetailsPage from "../../pages/IngredientDetailsPage/IngredientDetailsPage";
 import Login from "../../pages/Login/Login";
 import Register from "../../pages/Register/Register";
@@ -29,7 +30,7 @@ export default function App() {
   const background = state?.background;
 
   useEffect(() => {
-    if (getCookie('accessToken')) {
+    if (getCookie('refreshToken') && getCookie('accessToken')) {
       dispatch(getUser());
     }
   }, [dispatch]);
@@ -49,12 +50,15 @@ export default function App() {
               <BurgerConstructor />
             </DndProvider>
           } />
-          <Route path='/orders' element={<Page404 />} />
+          <Route path='/feed' element={<Feed />} />
+          <Route path="/feed/:id" element={<SingleOrderPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/profile" element={<ProtectedRoute children={<Profile />} />} />
+          <Route path="/profile/orders" element={<ProtectedRoute children={<Profile />} />} />
+          <Route path="/profile/orders/:id" element={<ProtectedRoute children={<SingleOrderPage />} />} />
           <Route path="/ingredients/:id" element={<IngredientDetailsPage />} />
           <Route path="/*" element={<Page404 />} />
         </Routes>
