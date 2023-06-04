@@ -2,31 +2,16 @@ import {
   ingredientsUrl,
   userUrl,
   tokenUrl,
-  refreshTokenLifetime,
-  accessTokenLifetime,
 } from '../constants/constants';
-import { getCookie } from './utils';
-
-// function checkResponse(res) {
-//   if (res.ok) {
-//     return res.json();
-//   } else {
-//     Promise.reject(`Ошибка: ${res.status}`);
-//   }
-// };
-
-// export async function request(url, options) {
-//   const res = await fetch(url, options);
-//   return await checkResponse(res);
-// };
+import { getCookie, setCookie } from './utils';
 
 
 const checkResponse = (res) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-
 export const request = async (url, options) => {
+  console.log(fetch, options);
   try {
     const res = await fetch(url, options); //делаем запрос
     return await checkResponse(res);
@@ -34,15 +19,14 @@ export const request = async (url, options) => {
     if (err.message === "jwt expired") {
       console.log("working");
       const refreshData = await refreshToken(); //обновляем токен
-      getCookie(
+      console.log(refreshData);
+      setCookie(
         'accessToken',
-        res.accessToken.split('Bearer ')[1],
-        { expires: accessTokenLifetime }
+        refreshData.accessToken.split('Bearer ')[1],
       );
-      getCookie(
+      setCookie(
         'refreshToken',
-        res.refreshToken,
-        { expires: refreshTokenLifetime }
+        refreshData.refreshToken,
       );
       options.headers.authorization = refreshData.accessToken;
       const res = await fetch(url, options); //вызываем перезапрос данных
@@ -52,8 +36,6 @@ export const request = async (url, options) => {
     }
   }
 };
-
-
 
 export async function refreshToken() {
   const res = await fetch(tokenUrl, {
