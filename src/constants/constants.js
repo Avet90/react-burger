@@ -10,5 +10,5 @@ export const passwordResetUrl = apiUrl + "/password-reset/reset";
 export const tokenUrl = apiUrl + "/auth/token";
 
 
-export const accessTokenLifetime = 120;
-export const refreshTokenLifetime = 240;
+export const accessTokenLifetime = 1200;
+export const refreshTokenLifetime = 2400;
