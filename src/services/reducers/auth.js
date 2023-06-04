@@ -20,8 +20,10 @@ import {
   RESTORE_PASS_FAIL,
   RESET_PASS_REQUEST,
   RESET_PASS_SUCCESS,
-  RESET_PASS_FAIL
+  RESET_PASS_FAIL,
 } from "../actions/auth";
+
+import { setCookie } from '../../utils/utils';
 
 const initialState = {
   isAuthorized: false,
@@ -47,7 +49,9 @@ const initialState = {
   restoreFailed: false,
   resetequest: false,
   resetSuccess: false,
-  resetFailed: false
+  resetFailed: false,
+  isLoading: false,
+  isLogin: false,
 };
 
 export const authReducer = (state = initialState, action) => {

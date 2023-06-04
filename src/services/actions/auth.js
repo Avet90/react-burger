@@ -87,6 +87,7 @@ export function login(data) {
   }
 };
 
+
 export function getUser() {
   return async function (dispatch) {
     dispatch({ type: GET_USER_REQUEST });
@@ -122,6 +123,9 @@ export function patchUser(data) {
       .catch(() => dispatch({ type: PATCH_USER_FAIL }))
   }
 };
+
+
+
 
 export function logout() {
   return async function (dispatch) {
