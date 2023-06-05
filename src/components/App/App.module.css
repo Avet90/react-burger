@@ -1,21 +1,18 @@
-.page {
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  -webkit-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
-  -moz-text-size-adjust: 100%;
-  text-rendering: optimizeLegibility;
-  margin: auto;
-  padding: 0;
-  background-color: #131316;
+:root {
+  /*--logo-width: 290px;
+  --logo-height: 50px;
+  --offset-base-size: 4px;*/
+  --scroll-bar-width: 8px;
+  --scrollbar-thumb: background: #8585ad;
+  --webkit-scrollbar-track: background: #2f2f37;
+  /*--bg: #131316;
+  --modal-bg: #1C1C21;
+  --secondary-text: #8585AD;*/
 }
 
-.message {
-  text-align: center;
-}
-
-.wrapper {
-  display:flex; 
-  justify-content:center; 
-  width: 100%;
+.main {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
 }

@@ -1,51 +1,44 @@
+.section {
+  width: 600px;
+}
+
+.empty {
+  padding: 100px;
+  text-align: center;
+  border: 2px dashed #fff;
+}
+
 .container {
-    height: 912px;
-    left: 380px;
-    top: 128px;
-    border-radius: 0;
+  max-height: 560px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  margin: 0;
+  padding: 0;
+  align-items: flex-end;
 }
 
-.listContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.ingredients__container {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  padding: 0;
+  overflow-y: scroll;
 }
 
-.scrollList {
-    composes: custom-scroll from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
-
-    /* height: 464px; */
-    max-height: 500px;
-    min-height: 80px;
-    width: 600px;
-    overflow-y: scroll;
+.ingredients__container::-webkit-scrollbar {
+  width: 8px;
+  background: #2f2f37;
 }
 
-.scrollList::-webkit-scrollbar {
-    width: 8px;
-    background-color: #2f2f37;
+.ingredients__container::-webkit-scrollbar-thumb {
+  background: #8585ad;
 }
 
-.scrollList::-webkit-scrollbar-thumb {
-    background-color: #8585ad;
-}
-
-li {
-    display: flex;
-    justify-content: end;
-    align-items: center;
-}
-
-li:last-child {
-    margin-bottom: 0;
-}
-
-.borderEdge {
-    width: 527px;
-}
-
-.bottomBoxContainer {
-    display: flex;
-    align-items: center;
-    margin-left: 210px;
+.total {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }

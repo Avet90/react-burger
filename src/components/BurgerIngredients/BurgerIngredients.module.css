@@ -1,13 +1,31 @@
-.scrollList {
-    composes: custom-scroll from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
-
-    height: 912px;
-    overflow-y: auto;
+.menu {
+  height: 600px;
+  overflow-y: scroll;
 }
+
+.menu::-webkit-scrollbar-thumb {
+  background: #8585ad;
+}
+
+.menu::-webkit-scrollbar {
+  width: 8px;
+  background: #2f2f37;
+}
+
 .section {
-    width: 600px;
+  width: 600px;
+  max-height: 800px;
 }
 
-.wrapper_tabs {
-    display: flex;
+.title {
+
 }
+
+.container {
+
+}
+
+.container__title {
+
+}
+
