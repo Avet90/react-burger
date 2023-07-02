@@ -6,7 +6,7 @@ import {
     WS_PROFILE_ORDERS_CONNECTION_CLOSED,
     WS_PROFILE_ORDERS_GET_MESSAGE,
     OPEN_DETAILS,
-    CLOSE_DETAILS
+    CLOSE_DETAILS,
   } from "../actions/wsProfileOrders";
   
   type TInitialState = {
@@ -71,3 +71,5 @@ import {
         return state
     }
   }
+
+

@@ -96,7 +96,10 @@ const OrderHistory: FC = () => {
         </Modal> : null
       }
     </>
+
   )
 };
 
+
 export default OrderHistory;
+

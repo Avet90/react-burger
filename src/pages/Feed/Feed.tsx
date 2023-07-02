@@ -117,7 +117,7 @@ const Feed: FC = () => {
         </div>
       </section>
       {opened ?
-        <Modal title="" onClose={closeDetails}>
+        <Modal title="  " onClose={closeDetails}>
           <SingleOrder order={orderModal} modal={true} />
         </Modal> : null
       }

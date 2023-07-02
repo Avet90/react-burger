@@ -38,8 +38,10 @@ const Modal: FC<IModalProps> = ({ title, children, onClose }) => {
     }
   }
 
-  if (title) {
+  if ((title)) {
     modalStyleSwitch(title);
+    console.log(title);
+    
   }
 
 
