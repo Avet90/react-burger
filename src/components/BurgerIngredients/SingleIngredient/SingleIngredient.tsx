@@ -13,21 +13,25 @@ const SingleIngredient: FC<ISingleIngredientProps> = ({ ingredient }) => {
   const { selectedBunId } = useSelector(store => store.menu);
   const { ingredients } = useSelector(store => store.cart);
 
-  function count(id: string): number {
+  
+  function count(id: string) {
+    console.log(ingredient._id);
     if (selectedBunId === id) {
       return 2;
     } else {
       return ingredients.filter(item => item._id === id).length;
     }
+    
   };
 
-  const [, dragRef] = useDrag({
+  const [{isDrag}, dragRef] = useDrag({
     type: 'items',
     item: ingredient,
     collect: monitor => ({
       isDrag: monitor.isDragging()
     })
   });
+
 
   return (
     <div ref={dragRef}>

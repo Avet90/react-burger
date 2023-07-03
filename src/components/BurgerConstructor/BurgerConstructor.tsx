@@ -4,6 +4,8 @@ import { useSelector } from "../../hooks/useSelector";
 import burgerConstructorStyles from "./BurgerConstructor.module.css";
 import { useDrop } from "react-dnd";
 import { ADD_BUN, ADD_INGREDIENTS, CLEAR_CART } from "../../services/actions/cart";
+import { CLEAR_BUN } from "../../services/actions/menu";
+
 import { getOrderData } from "../../services/actions/order";
 import { isBun, getTotal } from "../../utils/utils";
 import { SET_BUN } from "../../services/actions/menu";
@@ -24,6 +26,8 @@ const BurgerConstructor: FC = () => {
   const bun = useSelector(store => store.cart.bun);
   const order = useSelector(store => store.order.order);
   const isAuthorized = useSelector(store => store.auth.isAuthorized);
+  const { selectedBunId } = useSelector(store => store.menu);
+
 
   function addItemToCart(item: IIngredient): void {
     if (!isBun(item)) {
@@ -82,6 +86,7 @@ const BurgerConstructor: FC = () => {
   function closeOrderDetails(): void {
     setOpened(false);
     dispatch({ type: CLEAR_CART });
+    dispatch({type: CLEAR_BUN})
   };
 
   if (bun === null) {
@@ -131,6 +136,7 @@ const BurgerConstructor: FC = () => {
             type="primary"
             size="large"
             onClick={postOrder}
+            disabled={!bun}
           >
             Оформить заказ
           </Button>

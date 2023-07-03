@@ -6,6 +6,7 @@ export const GET_INGREDIENTS_SUCCESS: 'GET_INGREDIENTS_SUCCESS' = 'GET_INGREDIEN
 export const GET_INGREDIENTS_FAILED: 'GET_INGREDIENTS_FAILED' = 'GET_INGREDIENTS_FAILED';
 
 export const SET_BUN: 'SET_BUN' = 'SET_BUN';
+export const CLEAR_BUN: 'CLEAR_BUN' = 'CLEAR_BUN';
 export const OPEN_INGREDIENT_DETAILS: 'OPEN_INGREDIENT_DETAILS' = 'OPEN_INGREDIENT_DETAILS';
 export const CLOSE_INGREDIENT_DETAILS: 'CLOSE_INGREDIENT_DETAILS' = 'CLOSE_INGREDIENT_DETAILS';
 
@@ -31,6 +32,11 @@ export interface ISetBunAction {
   id: string;
 };
 
+export interface IClearBunAction {
+  readonly type: typeof CLEAR_BUN;
+  id: string;
+};
+
 export interface IOpenDetailsAction {
   readonly type: typeof OPEN_INGREDIENT_DETAILS;
   ingredient: IIngredient;
@@ -46,6 +52,7 @@ export type TMenuActions =
   | IGetMenuSuccessAction
   | IGetMenuFailedAction
   | ISetBunAction
+  | IClearBunAction
   | IOpenDetailsAction
   | ICloseDetailsAction;
 

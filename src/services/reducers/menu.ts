@@ -3,6 +3,7 @@ import {
   GET_INGREDIENTS_SUCCESS,
   GET_INGREDIENTS_FAILED,
   SET_BUN,
+  CLEAR_BUN,
   OPEN_INGREDIENT_DETAILS,
   CLOSE_INGREDIENT_DETAILS,
   TMenuActions
@@ -51,6 +52,12 @@ export const menuReducer = (state = initialState, action: TMenuActions) => {
       return {
         ...state,
         selectedBunId: action.id
+      }
+    }
+    case CLEAR_BUN: {
+      return {
+        ...state,
+        selectedBunId: null
       }
     }
     case OPEN_INGREDIENT_DETAILS: {
