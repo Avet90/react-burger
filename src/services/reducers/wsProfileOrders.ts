@@ -7,6 +7,7 @@ import {
     WS_PROFILE_ORDERS_GET_MESSAGE,
     OPEN_DETAILS,
     CLOSE_DETAILS,
+    TWsProfileActions
   } from "../actions/wsProfileOrders";
   
   type TInitialState = {
@@ -27,7 +28,8 @@ import {
     orderModal: null
   };
   
-  export const profileOrderReducer = (state = initialState, action: any ) => {
+
+  export const profileOrderReducer = (state = initialState, action: any /*TWsProfileActions - ломается*/ ) => {
     switch (action.type) {
       case WS_PROFILE_ORDERS_CONNECTION_SUCCESS:
         return {
